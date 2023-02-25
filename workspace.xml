@@ -1,0 +1,284 @@
+<xml xmlns="https://developers.google.com/blockly/xml">
+  <variables>
+    <variable type="Global" id="UJG:R|m8(!#umUN`rW_^">humansAlive</variable>
+  </variables>
+  <block type="modBlock" deletable="false" x="464" y="-19">
+    <statement name="RULES">
+      <block type="ruleBlock">
+        <mutation isOnGoingEvent="false"></mutation>
+        <field name="NAME">preventRespawn</field>
+        <field name="EVENTTYPE">OnPlayerIrreversiblyDead</field>
+        <statement name="CONDITIONS">
+          <block type="conditionBlock">
+            <value name="CONDITION">
+              <block type="Not">
+                <value name="VALUE-0">
+                  <block type="GetSoldierState">
+                    <value name="VALUE-0">
+                      <block type="EventPlayer"></block>
+                    </value>
+                    <value name="VALUE-1">
+                      <block type="SoldierStateBoolItem">
+                        <field name="VALUE-0">SoldierStateBool</field>
+                        <field name="VALUE-1">IsAISoldier</field>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+              </block>
+            </value>
+          </block>
+        </statement>
+        <statement name="ACTIONS">
+          <block type="ShowNotificationMessage">
+            <value name="VALUE-0">
+              <block type="Message">
+                <value name="VALUE-0">
+                  <block type="Text">
+                    <field name="TEXT">REDEPLOYMENT DISABLED UNTIL MATCH ENDS</field>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <value name="VALUE-1">
+              <block type="EventPlayer"></block>
+            </value>
+            <next>
+              <block type="SetSpawnOverride">
+                <value name="VALUE-0">
+                  <block type="EventPlayer"></block>
+                </value>
+                <value name="VALUE-1">
+                  <block type="Boolean">
+                    <field name="BOOL">FALSE</field>
+                  </block>
+                </value>
+                <next>
+                  <block type="subroutineInstanceBlock">
+                    <field name="SUBROUTINE_NAME">checkIfLastAlive</field>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </statement>
+        <next>
+          <block type="ruleBlock">
+            <mutation isOnGoingEvent="true"></mutation>
+            <field name="NAME">trackHumansLeftAlive</field>
+            <field name="EVENTTYPE">Ongoing</field>
+            <field name="OBJECTTYPE">Global</field>
+            <statement name="CONDITIONS">
+              <block type="conditionBlock">
+                <value name="CONDITION">
+                  <block type="GreaterThan">
+                    <value name="VALUE-0">
+                      <block type="GetMatchTimeElapsed"></block>
+                    </value>
+                    <value name="VALUE-1">
+                      <block type="Number">
+                        <field name="NUM">0</field>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+              </block>
+            </statement>
+            <statement name="ACTIONS">
+              <block type="While">
+                <value name="VALUE-0">
+                  <block type="GreaterThan">
+                    <value name="VALUE-0">
+                      <block type="GetMatchTimeElapsed"></block>
+                    </value>
+                    <value name="VALUE-1">
+                      <block type="Number">
+                        <field name="NUM">0</field>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+                <statement name="DO">
+                  <block type="SetVariable">
+                    <value name="VALUE-0">
+                      <block type="variableReferenceBlock">
+                        <mutation isObjectVar="false"></mutation>
+                        <field name="OBJECTTYPE">Global</field>
+                        <field name="VAR" id="UJG:R|m8(!#umUN`rW_^" variabletype="Global">humansAlive</field>
+                      </block>
+                    </value>
+                    <value name="VALUE-1">
+                      <block type="CountOf">
+                        <value name="VALUE-0">
+                          <block type="FilteredArray">
+                            <value name="VALUE-0">
+                              <block type="AllPlayers"></block>
+                            </value>
+                            <value name="VALUE-1">
+                              <block type="And">
+                                <value name="VALUE-0">
+                                  <block type="Equals">
+                                    <value name="VALUE-0">
+                                      <block type="GetSoldierState">
+                                        <value name="VALUE-0">
+                                          <block type="CurrentArrayElement"></block>
+                                        </value>
+                                        <value name="VALUE-1">
+                                          <block type="SoldierStateBoolItem">
+                                            <field name="VALUE-0">SoldierStateBool</field>
+                                            <field name="VALUE-1">IsAlive</field>
+                                          </block>
+                                        </value>
+                                      </block>
+                                    </value>
+                                    <value name="VALUE-1">
+                                      <block type="Boolean">
+                                        <field name="BOOL">TRUE</field>
+                                      </block>
+                                    </value>
+                                  </block>
+                                </value>
+                                <value name="VALUE-1">
+                                  <block type="Equals">
+                                    <value name="VALUE-0">
+                                      <block type="GetSoldierState">
+                                        <value name="VALUE-0">
+                                          <block type="CurrentArrayElement"></block>
+                                        </value>
+                                        <value name="VALUE-1">
+                                          <block type="SoldierStateBoolItem">
+                                            <field name="VALUE-0">SoldierStateBool</field>
+                                            <field name="VALUE-1">IsAISoldier</field>
+                                          </block>
+                                        </value>
+                                      </block>
+                                    </value>
+                                    <value name="VALUE-1">
+                                      <block type="Boolean">
+                                        <field name="BOOL">FALSE</field>
+                                      </block>
+                                    </value>
+                                  </block>
+                                </value>
+                              </block>
+                            </value>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                    <next>
+                      <block type="DisplayCustomNotificationMessage">
+                        <value name="VALUE-0">
+                          <block type="Message">
+                            <value name="VALUE-0">
+                              <block type="Text">
+                                <field name="TEXT">HUMANS LEFT ALIVE: {}</field>
+                              </block>
+                            </value>
+                            <value name="VALUE-1">
+                              <block type="GetVariable">
+                                <value name="VALUE-0">
+                                  <block type="variableReferenceBlock">
+                                    <mutation isObjectVar="false"></mutation>
+                                    <field name="OBJECTTYPE">Global</field>
+                                    <field name="VAR" id="UJG:R|m8(!#umUN`rW_^" variabletype="Global">humansAlive</field>
+                                  </block>
+                                </value>
+                              </block>
+                            </value>
+                          </block>
+                        </value>
+                        <value name="VALUE-1">
+                          <block type="CustomMessagesItem">
+                            <field name="VALUE-0">CustomMessages</field>
+                            <field name="VALUE-1">HeaderText</field>
+                          </block>
+                        </value>
+                        <value name="VALUE-2">
+                          <block type="Number">
+                            <field name="NUM">1</field>
+                          </block>
+                        </value>
+                        <next>
+                          <block type="Wait">
+                            <value name="VALUE-0">
+                              <block type="Number">
+                                <field name="NUM">0.1</field>
+                              </block>
+                            </value>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </statement>
+              </block>
+            </statement>
+          </block>
+        </next>
+      </block>
+    </statement>
+  </block>
+  <block type="subroutineBlock" deletable="false" x="466" y="915">
+    <field name="SUBROUTINE_NAME">checkIfLastAlive</field>
+    <statement name="CONDITIONS">
+      <block type="conditionBlock">
+        <value name="CONDITION">
+          <block type="Equals">
+            <value name="VALUE-0">
+              <block type="GetVariable">
+                <value name="VALUE-0">
+                  <block type="variableReferenceBlock">
+                    <mutation isObjectVar="false"></mutation>
+                    <field name="OBJECTTYPE">Global</field>
+                    <field name="VAR" id="UJG:R|m8(!#umUN`rW_^" variabletype="Global">humansAlive</field>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <value name="VALUE-1">
+              <block type="Number">
+                <field name="NUM">0</field>
+              </block>
+            </value>
+          </block>
+        </value>
+      </block>
+    </statement>
+    <statement name="ACTIONS">
+      <block type="ShowNotificationMessage">
+        <value name="VALUE-0">
+          <block type="Message">
+            <value name="VALUE-0">
+              <block type="Text">
+                <field name="TEXT">ALL HUMAN PLAYERS HAVE DIED - GAME OVER</field>
+              </block>
+            </value>
+          </block>
+        </value>
+        <next>
+          <block type="Wait">
+            <value name="VALUE-0">
+              <block type="Number">
+                <field name="NUM">6</field>
+              </block>
+            </value>
+            <next>
+              <block type="EndRound">
+                <value name="VALUE-0">
+                  <block type="GetTeamId">
+                    <value name="VALUE-0">
+                      <block type="Number">
+                        <field name="NUM">0</field>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </statement>
+  </block>
+</xml>
